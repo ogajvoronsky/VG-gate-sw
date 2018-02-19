@@ -1,5 +1,5 @@
-author: mongoose-os
-description: A Mongoose OS app skeleton
+author: ogajvoronsky@gmail.com
+description: A Mongoose OS app for embedded MQTT-switch in outdoor led lamp
 version: 1.0
 
 libs_version: ${mos.version}

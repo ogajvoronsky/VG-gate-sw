@@ -1,0 +1,22 @@
+{
+    "device": {
+        "id": "gate_esp"
+    },
+    "aws": {
+        "thing_name": "esp8266_gate"
+    },
+    "wifi": {
+        "sta": {
+            "enable": true,
+            "ssid": "M",
+            "pass": "pass"
+        },
+        "ap": {
+            "enable": false
+        }
+    },
+    "mqtt": {
+        "enable": true,
+        "server": "192.168.11.203:1883"
+    }
+}

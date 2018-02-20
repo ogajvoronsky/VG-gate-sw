@@ -9,7 +9,7 @@
         "sta": {
             "enable": true,
             "ssid": "M",
-            "pass": "pass"
+            "pass": "Scherbata32"
         },
         "ap": {
             "enable": false

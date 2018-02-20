@@ -23,19 +23,21 @@ let topic = '/devices/' + Cfg.get('device.id') + '/events';
 // Initialize pins
 GPIO.set_mode(led_pin, GPIO.MODE_OUTPUT);
 GPIO.set_mode(load_pin, GPIO.MODE_OUTPUT);
-GPIO.write(load_pin,!state); 
+GPIO.write(load_pin, !state);
 
 
 // Functions
+
+
 let sw_on = function() {
-    GPIO.write(load_pin,0);  // low level turns relay ON
-    MQTT.pub(sta_topic,'ON',1,1);
+    GPIO.write(load_pin, 0); // low level turns relay ON
+    MQTT.pub(sta_topic, 'ON', 1, 1);
     state = 1;
 };
 
 let sw_off = function() {
-    GPIO.write(load_pin,1);  // high level turns relay OFF
-    MQTT.pub(sta_topic,'OFF',1,1);
+    GPIO.write(load_pin, 1); // high level turns relay OFF
+    MQTT.pub(sta_topic, 'OFF', 1, 1);
     state = 0;
 };
 
@@ -54,13 +56,16 @@ MQTT.sub(cmd_topic, function(conn, topic, msg) {
         print('MQTT switching OFF...');
         sw_off();
     }
-    }, null);
+}, null);
+
+
 
 
 // Toggle load on a button press. Button is wired to GPIO pin 0
 GPIO.set_button_handler(button_pin, GPIO.PULL_UP, GPIO.INT_EDGE_NEG, 200, function() {
     sw_toggle();
-    print('Switch turned to', state ? 'ON':'OFF');
+    print('Switch turned to', state ? 'ON' : 'OFF');
+    state ? MQTT.pub(cmd_topic, 'ON', 1, 1) : MQTT.pub(cmd_topic, 'OFF', 1, 1);
 }, null);
 
 

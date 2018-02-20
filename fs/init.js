@@ -18,7 +18,7 @@ let load_pin = 5;
 let state = 0; // Initial state of light (OFF)
 let cmd_topic = 'light/gate/command'; // command topic (receive)
 let sta_topic = 'light/gate/state'; // status topic (publish)
-let topic = '/devices/' + Cfg.get('device.id') + '/events';
+
 
 // Initialize pins
 GPIO.set_mode(led_pin, GPIO.MODE_OUTPUT);
@@ -71,7 +71,7 @@ GPIO.set_button_handler(button_pin, GPIO.PULL_UP, GPIO.INT_EDGE_NEG, 200, functi
 
 // Blink built-in LED every second
 Timer.set(1000 /* 1 sec */ , Timer.REPEAT, function() {
-    let value = GPIO.toggle(led_pin);
+    GPIO.toggle(led_pin);
 }, null);
 
 

@@ -2,7 +2,6 @@
 load('api_config.js');
 load('api_rpc.js');
 load('api_dht.js');
-load('api_timer.js');
 load('api_events.js');
 load('api_gpio.js');
 load('api_mqtt.js');

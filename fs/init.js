@@ -25,8 +25,8 @@ let sta_topic = 'light/gate/state'; // status topic (publish)
 let alarm_topic = 'gate/alarm';
 let heartbeat = 'gate/heartbeat';
 let evs = '???'; //network state
-
-
+let temp = 0; // temperature
+let hum = 0; //humidity
 
 
 // Initialize pins
@@ -64,13 +64,20 @@ let led_flash = function(n) {
 };
 
 let getInfo = function() {
+    let h = dht_sensor.getHumidity();
+    let t = dht_sensor.getTemp();
+    // DHT22 sometimes gives wrong values
+    if (t < 100) {
+        temp = t;
+        hum = h;
+    }
     return JSON.stringify({
         gate_heartbeat: {
             total_ram: Sys.total_ram(),
             free_ram: Sys.free_ram(),
             uptime: Sys.uptime(),
-            temp: dht_sensor.getTemp(),
-            hum: dht_sensor.getHumidity()
+            temp: temp,
+            hum: hum
         }
     });
 };

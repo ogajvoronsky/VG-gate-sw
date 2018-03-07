@@ -8,6 +8,8 @@ load('api_mqtt.js');
 load('api_net.js');
 load('api_sys.js');
 load('api_timer.js');
+load('api_pwm.js');
+
 
 
 // pins & mqtt topics
@@ -15,6 +17,8 @@ let led_pin = 2; // status led
 let button_pin = 0; // Button (ground-470 Ohm)
 let load_pin = 5; // Pin the relay is connected to
 let dht_pin = 1; // DHT22 sensor
+let pir_pin = 16; // PIR sensor  (connects to ground then motion detected)
+let pir_state = 0; // low level - no motion
 
 let ON = 0; // GPIO output logical levels
 let OFF = 1;
@@ -31,11 +35,14 @@ let hum = 0; //humidity
 // Initialize pins
 GPIO.set_mode(led_pin, GPIO.MODE_OUTPUT);
 GPIO.set_mode(load_pin, GPIO.MODE_OUTPUT);
+GPIO.set_mode(pir_pin, GPIO.MODE_INPUT);
+GPIO.set_pull(pir_pin, GPIO.PULL_DOWN);
 GPIO.write(load_pin, !state);
 let dht_sensor = DHT.create(dht_pin, DHT.DHT22);
 
 
 // Functions
+
 let sw_on = function() {
     GPIO.write(load_pin, ON); // low level turns relay ON
     MQTT.pub(sta_topic, 'ON', 1, 1);
@@ -117,6 +124,21 @@ Timer.set(4000 /* 4 sec */ , Timer.REPEAT, function() {
     if (evs === 'CONNECTING') { led_flash(2) } else
     if (evs === 'DISCONNECTED') { led_flash(3) }
 
+}, null);
+
+// polling motion sensor
+Timer.set(500 /* 0.5 sec */ , Timer.REPEAT, function() {
+    let state = GPIO.read(pir_pin);
+    if (state !== pir_state) {
+        pir_state = state;
+        if (pir_state) {
+            MQTT.pub(alarm_topic, "Motion start", 0);
+            print('Motion started');
+        } else {
+            print('Motion ended');
+            MQTT.pub(alarm_topic, "Motion end", 0);
+        }
+    }
 }, null);
 
 //Read & publish temperature every 10 sec(also

@@ -1,9 +1,9 @@
 {
     "device": {
-        "id": "gate_esp"
+        "id": "silets_gate_esp"
     },
     "aws": {
-        "thing_name": "esp8266_gate"
+        "thing_name": "esp8266_silets_gate"
     },
     "wifi": {
         "sta": {
@@ -17,6 +17,8 @@
     },
     "mqtt": {
         "enable": true,
-        "server": "192.168.11.203:1883"
+        "server": "m11.cloudmqtt.com:16178",
+        "user": "xjmbtxje",
+        "pass": "An_gxdx67pRs"
     }
 }

@@ -23,10 +23,12 @@ let pir_state = 0; // low level - no motion
 let ON = 0; // GPIO output logical levels
 let OFF = 1;
 let state = 0; // Initial state of light (OFF)
-let cmd_topic = 'light/gate/command'; // command topic (receive)
-let sta_topic = 'light/gate/state'; // status topic (publish)
-let alarm_topic = 'gate/alarm';
-let heartbeat = 'gate/heartbeat';
+// MQTT namespace
+let cmd_topic = 'silets/gate/light/command'; // command topic (receive)
+let sta_topic = 'silets/gate/light/state'; // state topic (publish)
+let alarm_topic = 'silets/gate/alarm';
+let heartbeat = 'silets/gate/heartbeat';
+
 let evs = '???'; //network state
 let temp = 0; // temperature
 let hum = 0; //humidity
@@ -34,6 +36,7 @@ let hum = 0; //humidity
 
 // Initialize pins
 GPIO.set_mode(led_pin, GPIO.MODE_OUTPUT);
+GPIO.set_mode(button_pin, GPIO.MODE_INPUT);
 GPIO.set_mode(load_pin, GPIO.MODE_OUTPUT);
 GPIO.set_mode(pir_pin, GPIO.MODE_INPUT);
 GPIO.set_pull(pir_pin, GPIO.PULL_DOWN);
